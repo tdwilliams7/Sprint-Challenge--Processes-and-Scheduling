@@ -15,10 +15,24 @@ Add your answers inline, below, with your pull request.
 
 ## Programming Exercise: The Lambda School Shell (`lssh`)
 
+Important Safety Tip: Resist the urge to start coding until you:
+1. Read this complete challenge
+
+then
+
+2. Inventory the code and figure out what needs to be written where.
+
+
 This program implements a new shell that you can use to run commands from in
 Unix, similar to bash!
 
-At the end of the day, you should be able to run your shell, the run commands within it like so:
+At the end of the day, you should be able to run your shell, the run commands
+within it like in the following example.
+
+**NOTE: you do not need to implement the `ls` or `head` commands! These already
+exist in Unix. Your goal is to write a program that runs them with `exec()` when
+the user types in their names. And also the shell should be able to run _any_
+command, not just `ls` and `head`.**
 
 ```
 [bash]$ ./lssh 
@@ -62,9 +76,6 @@ Examine the `lssh.c` file and:
 * Determine how to exit the shell.
 * What happens if you build it?
 * What happens if you run it?
-
-Resist the urge to start coding until you've done all that and read this
-complete challenge.
 
 Hint: you probably want one of the `exec` variants that has the `p` suffix on it
 so that the `PATH` will be searched for the file you're trying to run. Choose
