@@ -196,6 +196,10 @@ Check the `args` array for a `>`. If it's there:
 		```
 	3. `exec` the program like normal.
 
+Note that depending on your [`umask`](https://en.wikipedia.org/wiki/Umask), the
+newly-created file might not be actually readable by you. If you can't read it,
+run `chmod 600 filename` on the new file and then you'll have permission.
+
 ### Extra Credit: Pipes
 
 In bash, you can pipe the output of one command into the input of another with
