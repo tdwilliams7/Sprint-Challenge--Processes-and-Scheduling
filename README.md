@@ -26,7 +26,7 @@ then
 This program implements a new shell that you can use to run commands from in
 Unix, similar to bash!
 
-At the end of the day, you should be able to run your shell, the run commands
+At the end of the day, you should be able to run your shell, then run commands
 within it like in the following example.
 
 **NOTE: you do not need to implement the `ls` or `head` commands! These already
@@ -55,7 +55,7 @@ lambda-shell$ exit
 [bash]$ 
 ```
 
-General attack is to:
+General plan of attack is to:
 
 * Loop until the user exits.
   * Print a prompt.
@@ -83,7 +83,7 @@ your `exec` variant carefully. Some will be hard-to-impossible to use. Some will
 be easy.
 
 When you get this working, _you will have your own shell_. It's not as
-full-featured as bash, by any means, but it is a legitimate shell and the core
+full-featured as bash by any means, but it is a legitimate shell and the core
 is the same as any other shell.
 
 If you finish early, look at extra credit to start implementing more features.
