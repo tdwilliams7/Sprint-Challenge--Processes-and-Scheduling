@@ -135,6 +135,8 @@ If the user entered `cd` as the first argument:
 Note that `.` and `..` are actual directories. You don't need to write any
 special case code to handle them.
 
+Be sure to think about where this functionality should live in the file. The order of execution of the code matters!
+
 ### Extra Credit: Background Tasks
 
 In bash, you can run a program in the background by adding an `&` after the
