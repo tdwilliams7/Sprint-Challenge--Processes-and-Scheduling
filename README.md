@@ -22,7 +22,7 @@ then
 
 2. Inventory the code and figure out what needs to be written where.
 
-
+### Task 1: Implement the Ability to Execute Arbitrary Commands
 This program implements a new shell that you can use to run commands from in
 Unix, similar to bash!
 
@@ -65,7 +65,7 @@ General plan of attack is to:
   * Exec the command in the child process.
   * Parent process waits for child to complete.
 
-Some of the shell is already written, but you have to write the guts of it.
+Most of the shell's boilerplate is already written, but you'll have to implement the logic of it.
 
 Examine the `lssh.c` file and:
 
@@ -88,7 +88,7 @@ is the same as any other shell.
 
 If you finish early, look at extra credit to start implementing more features.
 
-### Extra Credit: Change Directories with `cd`
+### Task 2: Implement the Ability to Change Directories with `cd`
 
 In bash, you can change directories with the built-in `cd` command.
 
