@@ -2,12 +2,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <errno.h>
 
 #define PROMPT "lambda-shell$ "
 
 #define MAX_TOKENS 100
 #define COMMANDLINE_BUFSIZE 1024
-#define DEBUG 1  // Set to 1 to turn on some debugging output, or 0 to turn off
+#define DEBUG 0  // Set to 1 to turn on some debugging output, or 0 to turn off
 
 /**
  * Parse the command line.
@@ -32,7 +35,7 @@
 char **parse_commandline(char *str, char **args, int *args_count)
 {
     char *token;
-    
+
     *args_count = 0;
 
     token = strtok(str, " \t\n\r");
@@ -84,9 +87,31 @@ int main(void)
             continue;
         }
 
+
         // Exit the shell if args[0] is the built-in "exit" command
         if (strcmp(args[0], "exit") == 0) {
             break;
+        }
+
+        // Change directories if the "cd" command is entered
+
+        if (strcmp(args[0], "cd") == 0)
+        {
+            if (chdir(args[1]) == 0) continue;
+            else perror("cd failed");
+        }
+
+        // Execute the desired command in a fork
+        // Wait for the fork to complete before continuing the main loop
+        int f = fork();
+        if (f == 0)
+        {
+            execvp(args[0], &args[0]);
+            break;
+        }
+        else
+        {
+            wait(NULL);
         }
 
         #if DEBUG
@@ -99,9 +124,6 @@ int main(void)
         }
 
         #endif
-        
-        /* Add your code for implementing the shell's logic here */
-        
     }
 
     return 0;
