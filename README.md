@@ -4,25 +4,40 @@
 
 Add your answers inline, below, with your pull request.
 
-1. List all of the main states a process may be in at any point in time on a
-   standard Unix system. Briefly explain what each of these states mean.
+1.  List all of the main states a process may be in at any point in time on a
+    standard Unix system. Briefly explain what each of these states mean.
 
-2. What is a Zombie Process? How does it get created? How does it get destroyed?
+    * created - process has been created, awaiting ready state;
+    * ready - A "ready" or "waiting" process has been loaded into main memory and is awaiting execution on a CPU;
+    * running - A process moves into the running state when it is chosen for execution;
+    * blocked - A process transitions to a blocked state when it cannot carry on without an external change in state or event occurring;
+    * terminated - A process may be terminated, either from the "running" state by completing its execution or by explicitly being killed;
 
-3. Describe the job of the Scheduler in the OS in general.
+2.  What is a Zombie Process? How does it get created? How does it get destroyed?
 
-4. Describe the benefits of the MLFQ over a plain Round-Robin scheduler.
+* a process that that has complete but has not been terminated. keeps running.
+* To remove zombies from a system, the SIGCHLD signal can be sent to the parent manually, using the kill command.
+
+3.  Describe the job of the Scheduler in the OS in general.
+
+* A job scheduler is a computer application for controlling unattended background program execution of jobs;
+
+4.  Describe the benefits of the MLFQ over a plain Round-Robin scheduler.
+
+* mlfq will determine a hierarchy that will run processes with more importance. round robin every process has the small importance.
 
 ## Programming Exercise: The Lambda School Shell (`lssh`)
 
 Important Safety Tip: Resist the urge to start coding until you:
-1. Read this complete challenge
+
+1.  Read this complete challenge
 
 then
 
-2. Inventory the code and figure out what needs to be written where.
+2.  Inventory the code and figure out what needs to be written where.
 
 ### Task 1: Implement the Ability to Execute Arbitrary Commands
+
 This program implements a new shell that you can use to run commands from in
 Unix, similar to bash!
 
@@ -35,7 +50,7 @@ the user types in their names. And also the shell should be able to run _any_
 command, not just `ls` and `head`.**
 
 ```
-[bash]$ ./lssh 
+[bash]$ ./lssh
 lambda-shell$ ls -l
 total 32
 -rwxr-xr-x  1 beej  staff  9108 Mar 15 13:28 lssh
@@ -52,7 +67,7 @@ lambda-shell$ head lssh.c
 #define COMMANDLINE_BUFSIZE 1024
 #define DEBUG 0  // Set to 1 to turn on some debugging output
 lambda-shell$ exit
-[bash]$ 
+[bash]$
 ```
 
 General plan of attack is to:
@@ -118,19 +133,19 @@ lambda-shell$ pwd
 /Users/example
 lambda-shell$ cd foobar
 chdir: No such file or directory
-lambda-shell$ 
+lambda-shell$
 ```
 
 If the user entered `cd` as the first argument:
 
-1. Check to make sure they've entered 2 total arguments
-2. Run the system call `chdir()` on the second argument to change directories
-3. Error check the result of `chdir()`. If it returns `-1`, meaning an error
-   occurred, you can print out an error message with:
-   ```
-   perror("chdir"); // #include <errno.h> to use this
-   ```
-4. Execute a `continue` statement to short-circuit the rest of the main loop.
+1.  Check to make sure they've entered 2 total arguments
+2.  Run the system call `chdir()` on the second argument to change directories
+3.  Error check the result of `chdir()`. If it returns `-1`, meaning an error
+    occurred, you can print out an error message with:
+    ```
+    perror("chdir"); // #include <errno.h> to use this
+    ```
+4.  Execute a `continue` statement to short-circuit the rest of the main loop.
 
 Note that `.` and `..` are actual directories. You don't need to write any
 special case code to handle them.
@@ -151,10 +166,10 @@ an `&`.
 
 If it is:
 
-1. Strip the `&` off the `args` (by setting that pointer to `NULL`).
-2. Run the command in the child as usual.
-3. Prevent the parent from `wait()`ing for the child to complete. Just give a
-   new prompt immediately. The child will continue to run in the background.
+1.  Strip the `&` off the `args` (by setting that pointer to `NULL`).
+2.  Run the command in the child as usual.
+3.  Prevent the parent from `wait()`ing for the child to complete. Just give a
+    new prompt immediately. The child will continue to run in the background.
 
 In every instance of the main loop after the user hits `RETURN`, you should wait
 in a loop to reap any background zombies that have died in the meantime. You can
@@ -181,7 +196,6 @@ appear before the program completes, or not at all if the program's output
 overwrites it. If it looks like it hangs at the end, just hit `RETURN` to get
 another prompt back.
 
-
 ### Extra Credit: File Redirection
 
 In bash, you can redirect the output of a program into a file with `>`. This
@@ -194,20 +208,23 @@ ls -l > foo.txt
 
 Check the `args` array for a `>`. If it's there:
 
-1. Get the output file name from the next element in `args`.
-2. Strip everything out of `args` from the `>` on. (Set the `args` element with
-   the `>` in it to `NULL`).
-3. In the child process:
-    1. `open()` the file for output. Store the resultant file descriptor in a
-       variable `fd`.
-    2. Use the `dup2()` system call to make `stdout` (file descriptor `1`) refer
-       to the newly-opened file instead:
+1.  Get the output file name from the next element in `args`.
+2.  Strip everything out of `args` from the `>` on. (Set the `args` element with
+    the `>` in it to `NULL`).
+3.  In the child process:
 
-	    ```c
-		int fd = open(...
-		dup2(fd, 1);  // Now stdout goes to the file instead
-		```
-	3. `exec` the program like normal.
+    1.  `open()` the file for output. Store the resultant file descriptor in a
+        variable `fd`.
+    2.  Use the `dup2()` system call to make `stdout` (file descriptor `1`) refer
+        to the newly-opened file instead:
+
+        ````c
+        		int fd = open(...
+        		dup2(fd, 1);  // Now stdout goes to the file instead
+        		```
+        ````
+
+    3.  `exec` the program like normal.
 
 Note that depending on your [`umask`](https://en.wikipedia.org/wiki/Umask), the
 newly-created file might not be actually readable by you. If you can't read it,
@@ -218,8 +235,7 @@ run `chmod 600 filename` on the new file and then you'll have permission.
 In bash, you can pipe the output of one command into the input of another with
 the `|` symbol.
 
-For example, this takes the output of `ls -l` and uses it as the input for `wc
--l` (which counts the number of lines in the input):
+For example, this takes the output of `ls -l` and uses it as the input for `wc -l` (which counts the number of lines in the input):
 
 ```
 ls -l | wc -l
